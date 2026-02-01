@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "id": "trigger",
+      "type": "input",
+      "label": "UI Trigger"
+    },
+    {
+      "id": "gh",
+      "type": "tool",
+      "label": "GitHub MCP"
+    },
+    {
+      "id": "dk",
+      "type": "tool",
+      "label": "Docker MCP"
+    },
+    {
+      "id": "k8s",
+      "type": "tool",
+      "label": "Kubernetes MCP"
+    },
+    {
+      "id": "decision",
+      "type": "output",
+      "label": "Decision"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "trigger",
+      "target": "gh"
+    },
+    {
+      "id": "e2",
+      "source": "gh",
+      "target": "dk"
+    },
+    {
+      "id": "e3",
+      "source": "dk",
+      "target": "k8s"
+    },
+    {
+      "id": "e4",
+      "source": "k8s",
+      "target": "decision"
+    }
+  ]
+}

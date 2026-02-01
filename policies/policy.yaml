@@ -1,0 +1,6 @@
+docker:
+  min_node_version: 18
+
+kubernetes:
+  required_env_vars:
+    - PAYMENT_TIMEOUT

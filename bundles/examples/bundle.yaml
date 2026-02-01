@@ -1,0 +1,7 @@
+bundle_name: checkout-suite
+shared_repo: org/shared-lib
+repos:
+  - org/checkout-service
+  - org/payments-service
+  - org/orders-service
+tag_strategy: same_tag
