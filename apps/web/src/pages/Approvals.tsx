@@ -1,5 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import { apiGet, apiPost } from '../api/http'
+import React, { useEffect, useState } from "react"
+import { Button } from "../components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table"
+import { apiGet, apiPost } from "../api/http"
 
 export default function Approvals() {
   const [items, setItems] = useState<any[]>([])
@@ -15,35 +25,56 @@ export default function Approvals() {
   }
 
   return (
-    <div style={{padding:16}}>
-      <h2>Approvals</h2>
-      <p>When policy blocks a release, an approval record is created (demo gate).</p>
-      <table style={{width:'100%', borderCollapse:'collapse'}}>
-        <thead>
-          <tr>
-            <th align="left">ID</th>
-            <th align="left">Release</th>
-            <th align="left">Status</th>
-            <th align="left">Reason</th>
-            <th align="left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map(a => (
-            <tr key={a.id} style={{borderTop:'1px solid #eee'}}>
-              <td>{a.id}</td>
-              <td style={{fontFamily:'monospace'}}>{a.release_id}</td>
-              <td>{a.status}</td>
-              <td style={{maxWidth:520, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'}} title={a.reason}>{a.reason}</td>
-              <td>
-                <button onClick={()=>setStatus(a.id,'APPROVED')}>Approve</button>{' '}
-                <button onClick={()=>setStatus(a.id,'REJECTED')}>Reject</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {!items.length && <p>No approvals yet. Run a release that fails policy.</p>}
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-semibold">Approvals</h2>
+        <p className="text-sm text-muted-foreground">Policy-driven gates that require manual review.</p>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Approval Queue</CardTitle>
+          <CardDescription>Approve or reject blocked releases.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>ID</TableHead>
+                <TableHead>Release</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Reason</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.map(a => (
+                <TableRow key={a.id}>
+                  <TableCell>{a.id}</TableCell>
+                  <TableCell className="font-mono text-xs">{a.release_id}</TableCell>
+                  <TableCell>{a.status}</TableCell>
+                  <TableCell className="max-w-[420px] truncate" title={a.reason}>
+                    {a.reason}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-wrap gap-2">
+                      <Button size="sm" onClick={() => setStatus(a.id, "APPROVED")}>Approve</Button>
+                      <Button size="sm" variant="outline" onClick={() => setStatus(a.id, "REJECTED")}>
+                        Reject
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          {!items.length && (
+            <p className="mt-4 text-sm text-muted-foreground">
+              No approvals yet. Run a release that fails policy.
+            </p>
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }

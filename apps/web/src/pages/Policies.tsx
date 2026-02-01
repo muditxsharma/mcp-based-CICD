@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { apiGet, apiPost } from '../api/http'
+import React, { useEffect, useState } from "react"
+import { Button } from "../components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
+import { Textarea } from "../components/ui/textarea"
+import { apiGet, apiPost } from "../api/http"
 
 export default function Policies() {
   const [policy, setPolicy] = useState<any>({})
@@ -19,12 +22,26 @@ export default function Policies() {
   }
 
   return (
-    <div style={{padding:16}}>
-      <h2>Policies</h2>
-      <p>Policy-as-code (edit JSON; backend stores YAML).</p>
-      <textarea value={text} onChange={e=>setText(e.target.value)} style={{width:'100%', height:320, fontFamily:'monospace'}} />
-      <br/>
-      <button onClick={save} style={{marginTop:8}}>Save</button>
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-semibold">Policies</h2>
+        <p className="text-sm text-muted-foreground">Policy-as-code editor (JSON in, YAML stored).</p>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Policy Draft</CardTitle>
+          <CardDescription>Edit JSON and push to the policy service.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Textarea
+            value={text}
+            onChange={e => setText(e.target.value)}
+            className="min-h-[360px] font-mono text-xs"
+          />
+          <Button onClick={save}>Save Policy</Button>
+        </CardContent>
+      </Card>
     </div>
   )
 }

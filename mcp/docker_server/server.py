@@ -1,6 +1,6 @@
 import os, re
 from fastapi import FastAPI
-from mcp.server import FastMCP
+from fastmcp import FastMCP
 import httpx
 
 APP_NAME = "docker-mcp"
@@ -8,8 +8,8 @@ HOST = os.getenv("MCP_HOST", "0.0.0.0")
 PORT = int(os.getenv("MCP_PORT", "9102"))
 REGISTRY_BASE_URL = os.getenv("REGISTRY_BASE_URL", "http://localhost:5000").rstrip("/")
 
-mcp = FastMCP(APP_NAME, host=HOST, port=PORT)
-app: FastAPI = mcp.streamable_http_app()
+# ✅ New FastMCP usage (no host/port args here)
+mcp = FastMCP(APP_NAME)
 
 def parse_base_image(dockerfile_text: str) -> str:
     for line in dockerfile_text.splitlines():
@@ -28,13 +28,15 @@ async def registry_tags(repo: str) -> list[str]:
         data = r.json()
         return data.get("tags") or []
 
-@mcp.tool()
-def docker_release_readiness(repo: str, env: str="staging", dockerfile: str | None = None, **_) -> dict:
+# ✅ Tool
+@mcp.tool
+def docker_release_readiness(repo: str, env: str = "staging", dockerfile: str | None = None) -> dict:
     """Inspect Dockerfile (or provided text) and validate base image policy."""
     if dockerfile is None:
         # demo fallback
         dockerfile = "FROM node:16\nWORKDIR /app\n"
     base = parse_base_image(dockerfile)
+
     # simple policy: node >= 18
     status = "ok"
     if base.startswith("node:"):
@@ -44,8 +46,15 @@ def docker_release_readiness(repo: str, env: str="staging", dockerfile: str | No
                 status = "non_compliant"
         except Exception:
             status = "unknown"
+
     return {"base_image": base, "status": status, "notes": "release readiness check"}
 
+# Mount MCP as an ASGI app under /mcp
+mcp_app = mcp.http_app(path="/")  # path="/" because we mount it at /mcp
+app = FastAPI(lifespan=mcp_app.lifespan)
+app.mount("/mcp", mcp_app)
+
+# Keep your compatibility endpoint used by the API scaffold
 @app.post("/tools/call")
 async def compat_call(body: dict):
     name = body.get("name")

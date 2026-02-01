@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from "react"
 import ReactFlow, {
   Background,
   Controls,
@@ -8,9 +8,12 @@ import ReactFlow, {
   useNodesState,
   Connection,
   Edge
-} from 'reactflow'
-import 'reactflow/dist/style.css'
-import { apiPost } from '../api/http'
+} from "reactflow"
+import "reactflow/dist/style.css"
+import { Button } from "../components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
+import { apiPost } from "../api/http"
 
 const initialNodes = [
   { id: '1', type: 'input', position: { x: 60, y: 60 }, data: { label: 'UI Trigger' } },
@@ -45,27 +48,56 @@ export default function WorkflowBuilder() {
   }
 
   return (
-    <div style={{height:'calc(100vh - 56px)'}}>
-      <div style={{padding:12, borderBottom:'1px solid #eee', display:'flex', gap:12, alignItems:'center'}}>
-        <h2 style={{margin:0}}>Workflow Builder</h2>
-        <button onClick={save}>Save</button>
-        <span style={{opacity:0.8}}>n8n-style canvas (React Flow). Stored as JSON.</span>
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="text-2xl font-semibold">Workflow Builder</h2>
+          <p className="text-sm text-muted-foreground">n8n-style canvas stored as JSON.</p>
+        </div>
+        <Button onClick={save}>Save</Button>
       </div>
-      <div style={{height:'100%'}}>
-        <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} fitView>
-          <MiniMap />
-          <Controls />
-          <Background />
-        </ReactFlow>
-      </div>
-      <div style={{position:'absolute', right: 12, bottom: 12, width: 420}}>
-        <details open>
-          <summary style={{cursor:'pointer'}}>Workflow JSON</summary>
-          <pre style={{background:'#f7f7f7', padding:12, borderRadius:8, maxHeight:240, overflow:'auto'}}>
-            {JSON.stringify(definition, null, 2)}
-          </pre>
-        </details>
-      </div>
+
+      <Tabs defaultValue="canvas">
+        <TabsList>
+          <TabsTrigger value="canvas">Canvas</TabsTrigger>
+          <TabsTrigger value="json">Workflow JSON</TabsTrigger>
+        </TabsList>
+        <TabsContent value="canvas">
+          <Card>
+            <CardHeader>
+              <CardTitle>Visual Graph</CardTitle>
+              <CardDescription>Drag nodes and connections to define control flow.</CardDescription>
+            </CardHeader>
+            <CardContent className="h-[520px]">
+              <ReactFlow
+                nodes={nodes}
+                edges={edges}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                fitView
+              >
+                <MiniMap />
+                <Controls />
+                <Background />
+              </ReactFlow>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="json">
+          <Card>
+            <CardHeader>
+              <CardTitle>Definition Payload</CardTitle>
+              <CardDescription>What gets persisted in the API.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <pre className="max-h-[520px] overflow-auto rounded-md border bg-muted/40 p-4 text-xs">
+                {JSON.stringify(definition, null, 2)}
+              </pre>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

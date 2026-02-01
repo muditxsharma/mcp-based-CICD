@@ -1,3 +1,12 @@
 {"ts": 1769974682.9866505, "type": "release.requested", "release_id": "cd63eb42-eed9-4c32-a99a-e96f4c436026", "payload": {"repo": "checkout-service", "env": "staging", "shared_repo": "org/shared-ci", "bundle": null}}
 {"ts": 1769974750.0980985, "type": "release.requested", "release_id": "19926ef7-46ad-4e6c-b9b1-ba7a0f5a7070", "payload": {"repo": "checkout-service", "env": "staging", "shared_repo": "org/shared-ci", "bundle": null}}
 {"ts": 1769974760.3016233, "type": "release.requested", "release_id": "95c27f00-1c6b-4dd5-a88c-7e558750cc9f", "payload": {"repo": "test", "env": "staging", "shared_repo": "org/shared-ci", "bundle": null}}
+{"ts": 1769984045.6553416, "type": "release.requested", "release_id": "bc9278c0-a3dd-4361-a135-f52db6c9c199", "payload": {"repo": "checkout-service", "env": "staging", "shared_repo": "org/shared-ci", "bundle": null}}
+{"ts": 1769984046.5396464, "type": "release.requested", "release_id": "39c50813-19ab-4118-b109-230a6ed165ff", "payload": {"repo": "checkout-service", "env": "staging", "shared_repo": "org/shared-ci", "bundle": null}}
+{"ts": 1769984089.3603625, "type": "release.requested", "release_id": "fddf2c9d-1018-4c7c-98bb-addd2d39a9ca", "payload": {"repo": "test", "env": "prod", "shared_repo": "org/shared-ci", "bundle": null}}
+{"ts": 1769984090.000211, "type": "release.requested", "release_id": "1a4ee046-e391-47b9-860b-58afa5c9b915", "payload": {"repo": "test", "env": "prod", "shared_repo": "org/shared-ci", "bundle": null}}
+{"ts": 1769984100.3727872, "type": "release.requested", "release_id": "9c10b39d-d756-47f5-bdda-7ca4a2a02e86", "payload": {"repo": "test", "env": "staging", "shared_repo": "", "bundle": null}}
+{"ts": 1769984100.887255, "type": "release.requested", "release_id": "6fc13243-3489-4da8-a021-28c599e9b5df", "payload": {"repo": "test", "env": "staging", "shared_repo": "", "bundle": null}}
+{"ts": 1769984101.091431, "type": "release.requested", "release_id": "bd3e7005-419e-4513-a328-b01675b79bde", "payload": {"repo": "test", "env": "staging", "shared_repo": "", "bundle": null}}
+{"ts": 1769984101.239901, "type": "release.requested", "release_id": "7ff262f7-c9f3-4ce5-b0a9-45d36d60618f", "payload": {"repo": "test", "env": "staging", "shared_repo": "", "bundle": null}}
+{"ts": 1769985018.167664, "type": "release.requested", "release_id": "0c800c66-06f4-4bc5-a4b8-8d852da62f57", "payload": {"repo": "checkout-service", "env": "staging", "shared_repo": "org/shared-ci", "bundle": null}}

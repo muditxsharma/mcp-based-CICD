@@ -1,5 +1,10 @@
-import React, { useState } from 'react'
-import { apiPost } from '../api/http'
+import React, { useState } from "react"
+import { Badge } from "../components/ui/badge"
+import { Button } from "../components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
+import { Input } from "../components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select"
+import { apiPost } from "../api/http"
 
 export default function ReleaseConsole() {
   const [repo, setRepo] = useState('checkout-service')
@@ -20,40 +25,56 @@ export default function ReleaseConsole() {
   }
 
   return (
-    <div style={{padding:16, display:'grid', gridTemplateColumns:'420px 1fr', gap:16}}>
-      <div style={{border:'1px solid #eee', borderRadius:12, padding:12}}>
-        <h2>Prepare Release</h2>
-        <label>Repo<br/>
-          <input value={repo} onChange={e=>setRepo(e.target.value)} style={{width:'100%'}}/>
-        </label>
-        <br/><br/>
-        <label>Environment<br/>
-          <select value={env} onChange={e=>setEnv(e.target.value)} style={{width:'100%'}}>
-            <option value="staging">staging</option>
-            <option value="prod">prod</option>
-          </select>
-        </label>
-        <br/><br/>
-        <label>Shared workflow repo<br/>
-          <input value={sharedRepo} onChange={e=>setSharedRepo(e.target.value)} style={{width:'100%'}}/>
-        </label>
-        <br/><br/>
-        <button onClick={run} style={{padding:'10px 12px'}}>Prepare Release</button>
-        {err && <p style={{color:'crimson'}}>{err}</p>}
-        <p style={{opacity:0.8}}>
-          UI is dumb on purpose. All logic lives in the agent + MCP tools.
-        </p>
-      </div>
+    <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
+      <Card>
+        <CardHeader>
+          <CardTitle>Prepare Release</CardTitle>
+          <CardDescription>Trigger the MCP-powered readiness checks.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Repo</label>
+            <Input value={repo} onChange={e => setRepo(e.target.value)} />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Environment</label>
+            <Select value={env} onValueChange={setEnv}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select env" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="staging">staging</SelectItem>
+                <SelectItem value="prod">prod</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Shared workflow repo</label>
+            <Input value={sharedRepo} onChange={e => setSharedRepo(e.target.value)} />
+          </div>
+          <Button onClick={run} className="w-full">Prepare Release</Button>
+          {err && <p className="text-sm text-destructive">{err}</p>}
+          <p className="text-xs text-muted-foreground">
+            UI stays lean. The agent + MCP tools carry the logic.
+          </p>
+          <Badge variant="secondary">SAFE mode enabled</Badge>
+        </CardContent>
+      </Card>
 
-      <div style={{border:'1px solid #eee', borderRadius:12, padding:12}}>
-        <h2>Release Readiness Report</h2>
-        {!out && <p>Run “Prepare Release” to generate a decision.</p>}
-        {out && (
-          <pre style={{background:'#f7f7f7', padding:12, borderRadius:8, overflow:'auto'}}>
-            {JSON.stringify(out, null, 2)}
-          </pre>
-        )}
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Release Readiness Report</CardTitle>
+          <CardDescription>Decision payload from the orchestrator.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {!out && <p className="text-sm text-muted-foreground">Run “Prepare Release” to generate a decision.</p>}
+          {out && (
+            <pre className="max-h-[480px] overflow-auto rounded-md border bg-muted/40 p-4 text-xs">
+              {JSON.stringify(out, null, 2)}
+            </pre>
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }

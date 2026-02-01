@@ -25,6 +25,32 @@ Prereqs (all free):
 - Python 3.11+
 - (Optional) Ollama for free local LLM reasoning
 
+## First Run
+1) Create env files:
+```bash
+cp .env.example .env
+cp apps/api/.env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env
+```
+
+2) Build + start:
+```bash
+docker compose up --build
+```
+
+Known ports:
+- UI: http://localhost:5173
+- API: http://localhost:8000/docs
+- Postgres: localhost:15432 (container: 5432)
+- Registry: localhost:15000 (container: 5000)
+- MCP servers: 9101 (GitHub), 9102 (Docker), 9103 (K8s)
+
+Troubleshooting:
+```bash
+docker compose ps
+docker compose logs -n 200 <service>
+```
+
 ### 1) Copy env files
 ```bash
 cp .env.example .env
